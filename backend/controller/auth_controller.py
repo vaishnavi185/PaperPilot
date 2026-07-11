@@ -14,7 +14,7 @@ class AuthController:
             name=user.name,
             email=user.email,
             password=hash_password(user.password) , # We'll hash this now
-            role_id=user.role_id
+            #role_id=user.role_id
         )
         print(hash_password(user.password))      
         db.add(new_user)
@@ -40,7 +40,7 @@ class AuthController:
         data={
         "sub": str(db_user.id),
         "email": db_user.email,
-        "role": db_user.role.name
+        #"role": db_user.role.name
         }
         )
 
@@ -51,6 +51,6 @@ class AuthController:
                 "id": db_user.id,
                 "name": db_user.name,
                 "email": db_user.email,
-                "role": db_user.role.name
+                #"role": db_user.role.name
             }
         }

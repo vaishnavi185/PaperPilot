@@ -11,11 +11,7 @@ class User(Base):
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False, index=True)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
-    role_id: Mapped[int] = mapped_column(
-        ForeignKey("roles.id"),
-        nullable=False
-    )
-    role = relationship("Role", back_populates="users")
+    
 
     created_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
