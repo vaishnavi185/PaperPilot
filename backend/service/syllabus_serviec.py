@@ -1,8 +1,13 @@
+from datetime import datetime
+import tempfile
+
 from sqlalchemy.orm import Session
 
 from models.Syllabus import Syllabus
 from schemes.Syllabus import SyllabusUpdate
 from exceptions.httpexception import not_found
+from utils.pdf_extractor import extract_text_from_pdf
+
 import cloudinary.uploader
 import config.cloudinary
 
@@ -22,11 +27,25 @@ class SyllabusService:
         file,
         db: Session,
     ):
-        # TODO: Save uploaded file and replace this with the actual path
+        # Save uploaded PDF temporarily
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+            temp_file.write(file.file.read())
+            temp_path = temp_file.name
+
+        # Extract text from PDF
+        extracted_text = extract_text_from_pdf(temp_path)
+
+        # Check extracted text
+        print(extracted_text)
+
+        # Reset file pointer before uploading to Cloudinary
+        file.file.seek(0)
+
+        # Upload to Cloudinary
         upload_result = cloudinary.uploader.upload(
-        file.file,
-        folder="syllabus",
-        resource_type="raw"
+            file.file,
+            folder="syllabus",
+            resource_type="raw",
         )
 
         file_url = upload_result.get("secure_url")
@@ -58,7 +77,7 @@ class SyllabusService:
         syllabus = db.query(Syllabus).filter(Syllabus.id == syllabus_id).first()
 
         if not syllabus:
-            not_found("Syllabus not found")
+            raise not_found("Syllabus not found")
 
         return syllabus
 
@@ -71,7 +90,7 @@ class SyllabusService:
         syllabus = db.query(Syllabus).filter(Syllabus.id == syllabus_id).first()
 
         if not syllabus:
-            not_found("Syllabus not found")
+            raise not_found("Syllabus not found")
 
         for key, value in syllabus_data.model_dump(exclude_unset=True).items():
             setattr(syllabus, key, value)
@@ -86,9 +105,12 @@ class SyllabusService:
         syllabus = db.query(Syllabus).filter(Syllabus.id == syllabus_id).first()
 
         if not syllabus:
-            not_found("Syllabus not found")
+            raise not_found("Syllabus not found")
 
-        db.delete(syllabus)
+        syllabus.deleted_at = datetime.utcnow()
+        syllabus.is_active = False
+
         db.commit()
+        db.refresh(syllabus)
 
         return {"message": "Syllabus deleted successfully"}

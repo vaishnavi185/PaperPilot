@@ -6,6 +6,7 @@ from routes.board_routes import board_router
 from routes.class_routes import class_router
 from routes.subject_route import subject_router
 from routes.syllabus_routes import syllabus_router
+from routes.Syllabustopic_routes import topic_router
 
 api_router = APIRouter()
 
@@ -15,3 +16,4 @@ api_router.include_router(board_router)
 api_router.include_router(class_router)
 api_router.include_router(subject_router)
 api_router.include_router(syllabus_router)
+api_router.include_router(topic_router)
