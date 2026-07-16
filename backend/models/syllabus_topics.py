@@ -20,10 +20,10 @@ class SyllabusTopic(Base):
 
     syllabus_id = Column(Integer, ForeignKey("syllabi.id"), nullable=False)
 
-    unit_no = Column(Integer, nullable=True)
+    unit_no = Column(String(20), nullable=True)
     unit_name = Column(String(255), nullable=True)
 
-    chapter_no = Column(Integer, nullable=True)
+    chapter_no = Column(String(20), nullable=True)
     chapter_name = Column(String(255), nullable=False)
 
     topic_name = Column(String(255), nullable=True)
