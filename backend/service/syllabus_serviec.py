@@ -36,9 +36,9 @@ class SyllabusService:
         # Extract text from PDF
         extracted_text = extract_text_from_pdf(temp_path)
         print("Before Parser")
-        parsed_topics = parse_syllabus(extracted_text)
+        #parsed_topics = parse_syllabus(extracted_text)
         print("After Parser")
-        print(parsed_topics)
+        #print(parsed_topics)
 
         # Check extracted text
         print(extracted_text)

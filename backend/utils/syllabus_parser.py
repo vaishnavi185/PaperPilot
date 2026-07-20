@@ -2,12 +2,12 @@ import re
 
 
 UNIT_PATTERN = re.compile(
-    r"^(.*?)(PART|UNIT|MODULE|SECTION|THEME|VOLUME|BOOK|भाग|इकाई)\s*([A-Za-z0-9IVX]+)\s*$",
+    r"^(?:#+\s*)?(.*?)(PART|UNIT|MODULE|SECTION|THEME|VOLUME|BOOK|भाग|इकाई)\s*([A-Za-z0-9IVX]+)$",
     re.IGNORECASE,
 )
 
 CHAPTER_PATTERN = re.compile(
-    r"^(Chapter|Ch|Lesson|Topic|अध्याय|पाठ)\s*([A-Za-z0-9IVX]*)[:.\-\s]*(.*)$",
+    r"^(?:#+\s*)?(Chapter|Ch|Lesson|Topic|अध्याय|पाठ)\s*([A-Za-z0-9IVX]*)[:.\-\s]*(.*)$",
     re.IGNORECASE,
 )
 

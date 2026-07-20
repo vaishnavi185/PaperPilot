@@ -1,14 +1,14 @@
-import fitz  # PyMuPDF
+from docling.document_converter import DocumentConverter
 
 
-def extract_text_from_pdf(pdf_path: str) -> str:
-    document = fitz.open(pdf_path)
+def extract_text_from_pdf(pdf_path: str):
+    converter = DocumentConverter()
 
-    text = ""
+    result = converter.convert(pdf_path)
 
-    for page in document:
-        text += page.get_text()
+    document = result.document
 
-    document.close()
+    print(type(document))
+    print(dir(document))
 
-    return text
+    return document
